@@ -73,7 +73,8 @@ def face_match():
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     print(count)
-    return   max(count, key=count.get)
+    max_key = max(count, key=count.get) if count else None
+    return max_key  
 
     # Release the webcam and close the window
     cap.release()

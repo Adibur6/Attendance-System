@@ -1,6 +1,7 @@
 # Ignore Python virtual environments
 venv/
 __pycache__/
+db/pictures/
 
 # Ignore compiled Python files
 *.pyc
