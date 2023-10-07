@@ -19,7 +19,7 @@ def index():
 
 @app.route('/studentlist',methods = ['POST', 'GET'])
 def studentlist():
-    f=open('data.json','r')
+    f=open('db/data.json','r')
     data=json.loads(f.read())
     f.close()    
     check_delete=request.args.get('delete')
@@ -35,7 +35,7 @@ def studentlist():
             else:
                 print("The file does not exist")
         
-        f=open('data.json','w')
+        f=open('db/data.json','w')
         f.write(json.dumps(data,indent=4))
         f.close()
         return redirect('studentlist')
@@ -46,10 +46,10 @@ def studentlist():
 
 @app.route('/studentsheet',methods = ['POST', 'GET'])
 def studentsheet():
-    f=open('sheet.json','r')
+    f=open('db/sheet.json','r')
     data=json.loads(f.read())
     f.close()    
-    f=open('data.json','r')
+    f=open('db/data.json','r')
     data1=json.loads(f.read())
     f.close()
     for d in data:
@@ -69,11 +69,11 @@ def studentsheet():
                 break
         
         
-        f=open('sheet.json','w')
+        f=open('db/sheet.json','w')
         f.write(json.dumps(data,indent=4))
         f.close()
-        df = pd.read_json (r'C:\Users\Ashfaqur Rahman\Desktop\python lab\attendence_project\sheet.json')
-        df.to_csv (r'C:\Users\Ashfaqur Rahman\Desktop\python lab\attendence_project\sheet.csv', index = None)
+        df = pd.read_json ('db/sheet.json')
+        df.to_csv ('db/sheet.csv', index = None)
         return redirect('studentsheet')
             
         return redirect('studentlist')
@@ -86,12 +86,12 @@ def studentsheet():
                 
                 data.append({'name':d1['name'],'id':d1['id'],'date':str(s2)})
                 break
-        f=open('sheet.json','w')
+        f=open('db/sheet.json','w')
         jsonfile=json.dumps(data,indent=4)
         f.write(jsonfile)
         f.close()
-        df = pd.read_json (r'C:\Users\Ashfaqur Rahman\Desktop\python lab\attendence_project\sheet.json')
-        df.to_csv (r'C:\Users\Ashfaqur Rahman\Desktop\python lab\attendence_project\sheet.csv', index = None)
+        df = pd.read_json ('db/sheet.json')
+        df.to_csv ('db/sheet.csv', index = None)
         return redirect('/studentsheet')
 
         
@@ -104,14 +104,14 @@ def main():
     clear_sheet=request.args.get('clear')
     if check_take=='yes':
         id=face_match()
-        f=open('sheet.json','r')
+        f=open('db/sheet.json','r')
         data=json.loads(f.read())
         f.close()
         okay=True
         if any(obj['id'] == id for obj in data):
             okay=False
         if okay:
-            f=open('data.json','r')
+            f=open('db/data.json','r')
             data1=json.loads(f.read())
             f.close()
 
@@ -121,24 +121,24 @@ def main():
                     now = datetime.datetime.now()
                     s2 = now.strftime("%H:%M:%S, %d/%m/%Y")
                     data.append({'name':obj['name'],'id':obj['id'],'date':str(s2)})
-            f=open('sheet.json','w')
+            f=open('db/sheet.json','w')
             jsonfile=json.dumps(data,indent=4)
             f.write(jsonfile)
             f.close()
-            df = pd.read_json (r'C:\Users\Ashfaqur Rahman\Desktop\python lab\attendence_project\sheet.json')
-            df.to_csv (r'C:\Users\Ashfaqur Rahman\Desktop\python lab\attendence_project\sheet.csv', index = None)
+            df = pd.read_json ('db/sheet.json')
+            df.to_csv ('db/sheet.csv', index = None)
             
 
 
         return redirect('main')
     elif clear_sheet=='yes':
-        f=open('sheet.json','w')
+        f=open('db/sheet.json','w')
         data=[]
         jsonfile=json.dumps(data,indent=4)
         f.write(jsonfile)
         f.close()
-        df = pd.read_json (r'C:\Users\Ashfaqur Rahman\Desktop\python lab\attendence_project\sheet.json')
-        df.to_csv (r'C:\Users\Ashfaqur Rahman\Desktop\python lab\attendence_project\sheet.csv', index = None)
+        df = pd.read_json ('db/sheet.json')
+        df.to_csv ('db/sheet.csv', index = None)
         return redirect('main')
 
 
@@ -150,10 +150,10 @@ def form_input():
     error=False
     success=False
     if request.method=='POST':
-        f=open('data.json','r')
+        f=open('db/data.json','r')
         data=json.loads(f.read())
         f.close()
-        f=open('data.json','w')
+        f=open('db/data.json','w')
         
         
         if any(obj['id'] == request.form['id'] for obj in data):
@@ -171,7 +171,7 @@ def form_input():
 @app.route('/download')
 def downloadFile ():
     #For windows you need to use drive name [ex: F:/Example.pdf]
-    path = "C:/Users/Ashfaqur Rahman/Desktop/python lab/attendence_project/sheet.csv"
+    path = "db/sheet.csv"
     return send_file(path, as_attachment=True)
 if __name__ =="__main__":
     app.run(debug=True)
