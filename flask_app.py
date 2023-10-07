@@ -1,8 +1,8 @@
-from flask import Flask,render_template, redirect, url_for, request,send_file
 from py_files.image_detect import face_detect_with_webcam 
-import json
-from py_files.face_capture import face_capture 
 from py_files.face_match import face_match
+from py_files.face_capture import face_capture 
+from flask import Flask,render_template, redirect, url_for, request,send_file
+import json
 import os
 import datetime
 import pandas as pd
